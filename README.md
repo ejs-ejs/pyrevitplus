@@ -38,6 +38,20 @@ Extensions for [pyRevit](https://eirannejad.github.io/pyRevit/)
 #### Open In Excel [Based on pyRevit Schedule Export Script]
 * [Opens all selected Schedules in Excel](https://vimeo.com/175722720)
 
+## Viewport Tools
+#### Save / Restore Viewport Crop boundary
+* Saves and restores viewport clipping boundary. Works for plan views, should work for sections and elevations.
+
+#### Save / Restore View-dependant grid properties
+* Saves and restores view-dependant grid properties: endpoints, grid bubbles, leaders. Works for plan views, should work for sections and elevations.
+
+#### Save / Restore View-dependant level properties
+* Saves and restores view-dependant level properties: endpoints, level markers, leaders. Works for sections and elevations.
+
+#### Tag and Spot Elevation allignment (under "Tags")
+* Alligns selected tags or spot elevations vertically or horizontally, based on the positions of the pre-selected enity. Works for plan views, sections and elevations.
+
+
 ## Tools in Development
 
 #### PackageManager
