@@ -1,7 +1,7 @@
 """
-Allign Tags horizontally
+Allign Tags / Spot Elevations horizontally
 
-Allign tags horizontally, according to the preselected tag.
+Allign tags and Spot Elevations horizontally, according to the preselected tag.
 
 TESTED REVIT API: 2020
 
@@ -39,11 +39,17 @@ if cView.ViewType in [DB.ViewType.FloorPlan, DB.ViewType.CeilingPlan, DB.ViewTyp
         UI.TaskDialog.Show('pyRevitPlus', 'Select a SINGLE tag')
     else:
         cTag = Tags[0]
-        cPos = cTag.TagHeadPosition
+        if cTag.unwrap().GetType() in [DB.IndependentTag, DB.SpotDimension]:
+            if cTag.unwrap().GetType() == DB.IndependentTag:
+                cPos = cTag.TagHeadPosition
+            else:
+                cPos = cTag.Location.Point
     
         with forms.WarningBar(title='Pick tag One by One. ESCAPE to end.'):
             if cView.ViewType in [DB.ViewType.Section, DB.ViewType.Elevation]:
                 allign_Z(cTag.Category, cPos)
             else:
                 allign_Y(cTag.Category, cPos)
+else:
+    UI.TaskDialog.Show('pyRevitPlus', 'View type \'{}\' is not supported.'.format(cView.ViewType))
         

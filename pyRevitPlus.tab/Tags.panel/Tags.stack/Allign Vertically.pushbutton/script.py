@@ -1,7 +1,7 @@
 """
-Allign Tags vertically
+Allign Tags / Spot Elevations vertically
 
-Allign tags vertically, according to the preselected tag.
+Allign tags and Spot Elevations vertically, according to the preselected tag.
 
 TESTED REVIT API: 2020
 
@@ -40,11 +40,19 @@ if cView.ViewType in [DB.ViewType.FloorPlan, DB.ViewType.CeilingPlan, DB.ViewTyp
         UI.TaskDialog.Show('pyRevitPlus', 'Select a SINGLE tag')
     else:
         cTag = Tags[0]
-        cPos = cTag.TagHeadPosition
-    
-        with forms.WarningBar(title='Pick tag One by One. ESCAPE to end.'):
-            if cView.ViewType in [DB.ViewType.Section, DB.ViewType.Elevation]:
-                allign_XY(cTag.Category, cPos)
+        if cTag.unwrap().GetType() in [DB.IndependentTag, DB.SpotDimension]:
+            if cTag.unwrap().GetType() == DB.IndependentTag:
+                cPos = cTag.TagHeadPosition
             else:
-                allign_X(cTag.Category, cPos)
+                cPos = cTag.Location.Point
+    
+            with forms.WarningBar(title='Pick tag One by One. ESCAPE to end.'):
+                if cView.ViewType in [DB.ViewType.Section, DB.ViewType.Elevation]:
+                    allign_XY(cTag.Category, cPos)
+                else:
+                    allign_X(cTag.Category, cPos)
+        else:
+            UI.TaskDialog.Show('pyRevitPlus', 'Selection is \"{}\", not a Tag or Spot Elevation'.format(cTag.unwrap().Category))
+else:
+    UI.TaskDialog.Show('pyRevitPlus', 'View type \'{}\' is not supported.'.format(cView.ViewType))
         

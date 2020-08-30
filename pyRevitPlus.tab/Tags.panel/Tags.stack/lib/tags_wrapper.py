@@ -94,6 +94,7 @@ def match_orientation(tagType, starting_or):
 
 
 def allign_X(tagType, starting_pt):
+    """Main X allignment routine for elements of given category."""
     # all actions under one transaction
     with revit.TransactionGroup("Allign tags vertically"):
         # make sure target elements are easily selectable
@@ -107,12 +108,18 @@ def allign_X(tagType, starting_pt):
             # on each allignment
             with revit.Transaction("Allign tag \'{}\' by X".format(picked_element.Id)):
                 # actual allignment
-                cPosition = picked_element.TagHeadPosition
-                picked_element.TagHeadPosition = DB.XYZ(starting_pt.X, cPosition.Y, cPosition.Z)
+                if picked_element.GetType() == DB.IndependentTag:
+                    cPosition = picked_element.TagHeadPosition
+                    picked_element.TagHeadPosition = DB.XYZ(starting_pt.X, cPosition.Y, cPosition.Z)
+                else:
+                    cPosition = picked_element.Location.Point
+                    delta = DB.XYZ(starting_pt.X - cPosition.X , 0, 0)
+                    picked_element.Location.Move(DB.XYZ(starting_pt.X - cPosition.X , 0, 0))
+
 
 
 def allign_Y(tagType, starting_pt):
-    """Main renumbering routine for elements of given category."""
+    """Main Y allignment routine for elements of given category."""
     # all actions under one transaction
     with revit.TransactionGroup("Allign tags horizontally"):
         # make sure target elements are easily selectable
@@ -126,11 +133,17 @@ def allign_Y(tagType, starting_pt):
             # on each allignment
             with revit.Transaction("Allign tag \'{}\' by Y".format(picked_element.Id)):
                 # actual allignment
-                cPosition = picked_element.TagHeadPosition
-                picked_element.TagHeadPosition = DB.XYZ(cPosition.X, starting_pt.Y, cPosition.Z)
+                if picked_element.GetType() == DB.IndependentTag:
+                    cPosition = picked_element.TagHeadPosition
+                    picked_element.TagHeadPosition = DB.XYZ(cPosition.X, starting_pt.Y, cPosition.Z)
+                else:
+                    cPosition = picked_element.Location.Point
+                    delta = DB.XYZ(0, starting_pt.Y - cPosition.Y, 0)
+                    picked_element.Location.Move(DB.XYZ(0, starting_pt.Y - cPosition.Y , 0))
+                    
                 
 def allign_XY(tagType, starting_pt):
-    """Main renumbering routine for elements of given category."""
+    """Main XY allignment routine for elements of given category."""
     # all actions under one transaction
     with revit.TransactionGroup("Allign tags vertically in section / elevation"):
         # make sure target elements are easily selectable
@@ -144,11 +157,16 @@ def allign_XY(tagType, starting_pt):
             # on each allignment
             with revit.Transaction("Allign tag \'{}\' by XY".format(picked_element.Id)):
                 # actual allignment
-                cPosition = picked_element.TagHeadPosition
-                picked_element.TagHeadPosition = DB.XYZ(starting_pt.X, starting_pt.Y, cPosition.Z)
+                if picked_element.GetType() == DB.IndependentTag:
+                    cPosition = picked_element.TagHeadPosition
+                    picked_element.TagHeadPosition = DB.XYZ(starting_pt.X, starting_pt.Y, cPosition.Z)
+                else:
+                    cPosition = picked_element.Location.Point
+                    delta = DB.XYZ(0, starting_pt.Y - cPosition.Y , 0, 0)
+                    picked_element.Location.Move(DB.XYZ(starting_pt.X - cPosition.X, starting_pt.Y - cPosition.Y, cPosition.Z)) 
                 
 def allign_Z(tagType, starting_pt):
-    """Main renumbering routine for elements of given category."""
+    """Main Z allignment routine for elements of given category."""
     # all actions under one transaction
     with revit.TransactionGroup("Allign tags horizontally"):
         # make sure target elements are easily selectable
@@ -162,5 +180,10 @@ def allign_Z(tagType, starting_pt):
             # on each allignment
             with revit.Transaction("Allign tag \'{}\' by Z".format(picked_element.Id)):
                 # actual allignment
-                cPosition = picked_element.TagHeadPosition
-                picked_element.TagHeadPosition = DB.XYZ(cPosition.X, cPosition.Y, starting_pt.Z)
+                if picked_element.GetType() == DB.IndependentTag:
+                    cPosition = picked_element.TagHeadPosition
+                    picked_element.TagHeadPosition = DB.XYZ(cPosition.X, cPosition.Y, starting_pt.Z)
+                else:
+                    cPosition = picked_element.Location.Point
+                    delta = DB.XYZ(0, starting_pt.Y - cPosition.Y , 0, 0)
+                    picked_element.Location.Move(DB.XYZ(0, 0, starting_pt.Z - cPosition.Z)) 
