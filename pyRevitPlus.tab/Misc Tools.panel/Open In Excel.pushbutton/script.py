@@ -48,7 +48,7 @@ with open(EXCELPATHS_FILEPATH) as fp:
 
 for excel_path in excel_paths:
     if os.path.exists(excel_path):
-    recipient = excel_path
+        recipient = excel_path
         break
 else:
     UI.TaskDialog.Show('OpenInExcel', 'Could not find Excel Path \n'
