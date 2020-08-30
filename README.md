@@ -38,7 +38,7 @@ Extensions for [pyRevit](https://eirannejad.github.io/pyRevit/)
 #### Open In Excel [Based on pyRevit Schedule Export Script]
 * [Opens all selected Schedules in Excel](https://vimeo.com/175722720)
 
-## Viewport Tools
+### Viewport Tools
 #### Save / Restore Viewport Crop boundary
 * Saves and restores viewport clipping boundary. Works for plan views, should work for sections and elevations.
 
